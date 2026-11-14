@@ -1,7 +1,5 @@
 from django.shortcuts import render, redirect
 from .forms import RegisterForm
-from django.contrib.auth import authenticate, login, logout
-from django.views.decorators.http import require_POST
 
 
 def register(request):
@@ -16,25 +14,3 @@ def register(request):
         form = RegisterForm()
 
     return render(request, 'accounts/register.html', {'form': form})
-
-
-def login_view(request):
-    if request.method == 'POST':
-        username = request.POST.get('username')
-        password = request.POST.get('password')
-
-        user = authenticate(request, username = username, password= password)
-
-        if user is not None:
-            login(request, user)
-            return redirect('home')
-        else:
-            error = "Invalid"
-            return render(request, "accounts/login.html", {"error": error})
-    return  render(request, 'accounts/login.html')
-
-@require_POST
-def logout_view(request):
-    logout(request)
-
-    return redirect('home')
