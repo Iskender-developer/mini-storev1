@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from .forms import RegisterForm
 from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.models import User
+from django.views.decorators.http import require_POST
 
 
 def register(request):
@@ -30,5 +30,11 @@ def login_view(request):
             return redirect('home')
         else:
             error = "Invalid"
-            return render(request, "login.html", {"error": error})
+            return render(request, "accounts/login.html", {"error": error})
     return  render(request, 'accounts/login.html')
+
+@require_POST
+def logout_view(request):
+    logout(request)
+
+    return redirect('home')
